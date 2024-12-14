@@ -119,6 +119,62 @@ var swiper = new Swiper(".home-slider", {
     },
   });
 
+   // Contact form validation and local storage
+const contactForm = document.querySelector('.contact form');
+const nameInput = contactForm.querySelector('input[placeholder="name"]');
+const emailInput = contactForm.querySelector('input[placeholder="email"]');
+const phoneInput = contactForm.querySelector('input[placeholder="phone"]');
+const messageInput = contactForm.querySelector('textarea[placeholder="message"]');
+
+contactForm.onsubmit = (e) => {
+  e.preventDefault(); // Prevent default form submission
+
+  // Validate inputs
+  if (nameInput.value.trim() === '') {
+    alert('Please enter your name.');
+    nameInput.focus();
+    return;
+  }
+
+  if (emailInput.value.trim() === '' || !validateEmail(emailInput.value)) {
+    alert('Please enter a valid email address.');
+    emailInput.focus();
+    return;
+  }
+
+  if (phoneInput.value.trim() === '' || isNaN(phoneInput.value) || phoneInput.value.length < 10) {
+    alert('Please enter a valid phone number (at least 10 digits).');
+    phoneInput.focus();
+    return;
+  }
+
+  if (messageInput.value.trim() === '') {
+    alert('Please enter your message.');
+    messageInput.focus();
+    return;
+  }
+
+  // Save to local storage
+  const contactData = {
+    name: nameInput.value.trim(),
+    email: emailInput.value.trim(),
+    phone: phoneInput.value.trim(),
+    message: messageInput.value.trim(),
+  };
+
+  localStorage.setItem('contactData', JSON.stringify(contactData));
+
+  // Clear the form and notify user
+  alert('Your message has been sent successfully!');
+  contactForm.reset();
+};
+
+// Helper function to validate email
+function validateEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
   let accordion = document.querySelectorAll('.faq .accordion-container .accordion');
 
 accordion.forEach(acco =>{
